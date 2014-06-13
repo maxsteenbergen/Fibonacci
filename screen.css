@@ -63,7 +63,7 @@ span{
 #optionsModal{
   box-sizing: border-box;
   width: 150px;
-  height: 240px;
+  //height: 240px;
   position: absolute;
   z-index: 99999;
   border: 1px solid hsla(100, 100%, 100%, 0.6);
@@ -124,10 +124,11 @@ section{
 }
 
 footer{
-  position: absolute;
-  bottom: 0;
+  box-sizing: border-box;
   text-align: center;
+  margin-top: 50px;
   width: 100%;
+  height: 40px;
   padding: 15px;
   background-color: hsla(200,100%,90%,0.3);
   outline: 1px solid hsla(200,100%,90%,0.6);
