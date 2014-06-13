@@ -1,4 +1,4 @@
-![alt text](https://raw.githubusercontent.com/maxsteenbergen/Fibonacci/master/img/fibonacci_icon_blue.png "Fibonacci")
+![alt text](https://raw.githubusercontent.com/maxsteenbergen/Fibonacci/master/img/fibonacci_icon_blue@2x.png "Fibonacci")
 
 Fibonacci
 =========
