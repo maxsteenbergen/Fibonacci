@@ -58,17 +58,17 @@ $(document).ready( function(){
     var parent = $(srcSection).parent()
     if( $( '#splitControls' ).length == 0 && $( '#optionsModal' ).length == 0){
       $( srcSection ).append( '<div id="splitControls">' )
-      $( '#splitControls' ).append( '<img id="splitVerticalIcon" data-layout-action="splitvertical" src="splitvertical.png">' )
-      $( '#splitControls' ).append( '<img id="splitHorizontalIcon" data-layout-action="splithorizontal" src="splithorizontal.png">' )
+      $( '#splitControls' ).append( '<img id="splitVerticalIcon" data-layout-action="splitvertical" src="splitvertical.png" alt="Split vertically">' )
+      $( '#splitControls' ).append( '<img id="splitHorizontalIcon" data-layout-action="splithorizontal" src="splithorizontal.png" alt="Split horizontally" title="Split horizontally">' )
 
       if( parent.hasClass( 'columnParent' ))
-        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="addhorizontal" src="addhorizontal.png">' )
+        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="addhorizontal" src="addhorizontal.png" alt="Add horizontal sibling" title="Add horizontal sibling">' )
 
       if( parent.hasClass( 'rowParent' ))
-        $( '#splitControls' ).append( '<img id="addVerticalIcon" data-layout-action="addvertical" src="addvertical.png">' )
+        $( '#splitControls' ).append( '<img id="addVerticalIcon" data-layout-action="addvertical" src="addvertical.png" alt="Add vertical sibling" title="Add vertical sibling">' )
 
       if ( srcSection.id != 'container' )
-        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="options" src="options.png">' )
+        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="options" src="options.png" alt="More options" title="More options">' )
 
     }
   }
@@ -92,8 +92,8 @@ $(document).ready( function(){
     // Split current row in two
     //////////////////////////////////////*/
     if (action == 'splitvertical'){
-      parentSection.append( '<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      parentSection.append( '<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentSection.append( '\n<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentSection.append( '\n<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
       $(parentSection).addClass( 'rowParent' )
       $(parentSection).find( 'section' )
         .addClass( 'flexChild' )
@@ -104,8 +104,8 @@ $(document).ready( function(){
     // Split current column in two
     //////////////////////////////////////*/
     else if (action == 'splithorizontal'){
-      parentSection.append( '<section class="columnSection" id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      parentSection.append( '<section class="columnSection" id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentSection.append( '\n<section class="columnSection" id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentSection.append( '\n<section class="columnSection" id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
       $(parentSection).addClass( 'columnParent' )
       $(parentSection).find( 'section' )
         .addClass( 'flexChild' )
@@ -117,7 +117,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addvertical'){
       if( grandParent.hasClass( 'rowParent' )){
-        $(grandParent).append( '<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+        $(grandParent).append( '\n<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
         $(grandParent).find( 'section' ).addClass( 'flexChild' )
       }
       else {
@@ -130,7 +130,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addhorizontal'){
      if( grandParent.hasClass( 'columnParent' )){
-        $(grandParent).append( '<section id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+        $(grandParent).append( '\n<section id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
         $(grandParent).find( 'section' ).addClass( 'flexChild' )
       }
       else {
@@ -145,9 +145,9 @@ $(document).ready( function(){
       var parentDimension = grandParent.parent().hasClass( 'columnParent' ) ? 'height' : 'width'
 
 
-      $( '#optionsModal' ).append( '<img src="expand.png" id="growSectionButton"></img>')
-                          .append( '<img src="shrink.png" id="shrinkSectionButton"></img>')
-                          .append( '<img id="removeSectionButton" src="trash.png"></img><br>' )
+      $( '#optionsModal' ).append( '<img src="expand.png" id="growSectionButton" alt="Expand section" title="Expand section"></img>')
+                          .append( '<img src="shrink.png" id="shrinkSectionButton" alt="Shrink section" title="Shrink section"></img>')
+                          .append( '<img id="removeSectionButton" src="trash.png" alt="Delete section" title="Delete section"></img><br>' )
                           .append( '<input id="dimensionSizeInput" type="text" placeholder="Fixed ' + dimension + '"><br>' )
                           .append( '<button id="enterDimensionButton">Enter</button><br>')
 
