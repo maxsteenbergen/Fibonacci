@@ -1,3 +1,5 @@
+![alt text](https://raw.githubusercontent.com/maxsteenbergen/Fibonacci/master/img/fibonacci_icon_blue.png "Fibonacci")
+
 Fibonacci
 =========
 ##Flexbox page layout composer
