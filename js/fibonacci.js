@@ -23,7 +23,7 @@ $(document).ready( function(){
     else {
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
-      $.get( 'fibonacci.css' ).then(function(cssCode, status, xhr){
+      $.get( 'css/fibonacci.css' ).then(function(cssCode, status, xhr){
         var overrides = ''
         for (var i = Object.keys(CSSOverrides).length - 1; i >= 0; i--) {
           overrides += '#' + Object.keys(CSSOverrides)[i] + '{ ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '}\n'
@@ -58,17 +58,17 @@ $(document).ready( function(){
     var parent = $(srcSection).parent()
     if( $( '#splitControls' ).length == 0 && $( '#optionsModal' ).length == 0){
       $( srcSection ).append( '<div id="splitControls">' )
-      $( '#splitControls' ).append( '<img id="splitVerticalIcon" data-layout-action="splitvertical" src="splitvertical.png" alt="Split vertically">' )
-      $( '#splitControls' ).append( '<img id="splitHorizontalIcon" data-layout-action="splithorizontal" src="splithorizontal.png" alt="Split horizontally" title="Split horizontally">' )
+      $( '#splitControls' ).append( '<img id="splitVerticalIcon" data-layout-action="splitvertical" src="img/splitvertical.png" alt="Split vertically">' )
+      $( '#splitControls' ).append( '<img id="splitHorizontalIcon" data-layout-action="splithorizontal" src="img/splithorizontal.png" alt="Split horizontally" title="Split horizontally">' )
 
       if( parent.hasClass( 'columnParent' ))
-        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="addhorizontal" src="addhorizontal.png" alt="Add horizontal sibling" title="Add horizontal sibling">' )
+        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="addhorizontal" src="img/addhorizontal.png" alt="Add horizontal sibling" title="Add horizontal sibling">' )
 
       if( parent.hasClass( 'rowParent' ))
-        $( '#splitControls' ).append( '<img id="addVerticalIcon" data-layout-action="addvertical" src="addvertical.png" alt="Add vertical sibling" title="Add vertical sibling">' )
+        $( '#splitControls' ).append( '<img id="addVerticalIcon" data-layout-action="addvertical" src="img/addvertical.png" alt="Add vertical sibling" title="Add vertical sibling">' )
 
       if ( srcSection.id != 'container' )
-        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="options" src="options.png" alt="More options" title="More options">' )
+        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="options" src="img/options.png" alt="More options" title="More options">' )
 
     }
   }
@@ -145,9 +145,9 @@ $(document).ready( function(){
       var parentDimension = grandParent.parent().hasClass( 'columnParent' ) ? 'height' : 'width'
 
 
-      $( '#optionsModal' ).append( '<img src="expand.png" id="growSectionButton" alt="Expand section" title="Expand section"></img>')
-                          .append( '<img src="shrink.png" id="shrinkSectionButton" alt="Shrink section" title="Shrink section"></img>')
-                          .append( '<img id="removeSectionButton" src="trash.png" alt="Delete section" title="Delete section"></img><br>' )
+      $( '#optionsModal' ).append( '<img src="img/expand.png" id="growSectionButton" alt="Expand section" title="Expand section"></img>')
+                          .append( '<img src="img/shrink.png" id="shrinkSectionButton" alt="Shrink section" title="Shrink section"></img>')
+                          .append( '<img id="removeSectionButton" src="img/trash.png" alt="Delete section" title="Delete section"></img><br>' )
                           .append( '<input id="dimensionSizeInput" type="text" placeholder="Fixed ' + dimension + '"><br>' )
                           .append( '<button id="enterDimensionButton">Enter</button><br>')
 
