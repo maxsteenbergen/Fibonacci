@@ -19,7 +19,7 @@ Tiny sidenote: Fibonacci is mostly a little sideproject still under development 
 **Q: _Then why is it named Fibonacci?_**
 **A:** There’s 1 reason, and 1 reason only. While testing the tool, I divided the main container into a Fibonacci-esque structure. That’s it. The structured reminded me of Fibonacci, I liked the ring of it, I called the tool Fibonacci. Fin.
 
-**Q: _The main ````#container```` section is 800*600 px. What's up with that?_**
+**Q: _The main ````#container```` section is 100% * 600px. What's up with that?_**
 **A:** The beauty of Flexbox is that it's flexible. Whatever the dimensions of your container or even the viewport, Flexbox adapts automatically. It's completely fluid. So all you need to do is to give the ````#container```` section the dimensions you need, and all child sections made with Fibonacci will resize accordingly.
 
 **Q: _Does Fibonacci only split sections in half?_**
