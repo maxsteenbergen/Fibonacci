@@ -43,7 +43,7 @@ $(document).ready( function(){
       $(this).css( 'opacity', 1)
       var code =
       'Fibonacci is an offshoot of an internal tool created to let non-developers design page layouts using Flexbox, without having to learn HTML or CSS. \n\n' +
-      'Fibonacci starts with a blank <section>, which you can then split to your heart\'s content. It generates both the HTML and CSS needed to recreate the layout in your own pages.\n' +
+      'Fibonacci starts with a blank <div>, which you can then split to your heart\'s content. It generates both the HTML and CSS needed to recreate the layout in your own pages.\n' +
       'After you\'ve made your horizontal or vertical split, you can then add a new sibling, shrink or expand, give it a fixed width/height, remove or split it again.' +
       'Remember to add a unit when you enter a fixed width or height!\n' +
       'Once you\'re happy with the layout, hit the export icons to copy the generated code and paste it wherever you need it in your own code. \n\n' +
@@ -55,10 +55,10 @@ $(document).ready( function(){
     }
   })
 
-  function addSplitControls(srcSection){
-    var parent = $(srcSection).parent()
+  function addSplitControls(srcDiv){
+    var parent = $(srcDiv).parent()
     if( $( '#splitControls' ).length == 0 && $( '#optionsModal' ).length == 0){
-      $( srcSection ).append( '<div id="splitControls">' )
+      $( srcDiv ).append( '<div id="splitControls">' )
       $( '#splitControls' ).append( '<img id="splitVerticalIcon" data-layout-action="splitvertical" src="img/splitvertical.png" alt="Split vertically">' )
       $( '#splitControls' ).append( '<img id="splitHorizontalIcon" data-layout-action="splithorizontal" src="img/splithorizontal.png" alt="Split horizontally" title="Split horizontally">' )
 
@@ -68,35 +68,35 @@ $(document).ready( function(){
       if( parent.hasClass( 'rowParent' ))
         $( '#splitControls' ).append( '<img id="addVerticalIcon" data-layout-action="addvertical" src="img/addvertical.png" alt="Add vertical sibling" title="Add vertical sibling">' )
 
-      if ( srcSection.id != 'container' )
+      if ( srcDiv.id != 'container' )
         $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="options" src="img/options.png" alt="More options" title="More options">' )
 
     }
   }
 
-  $( 'body' ).on( 'mouseover', 'section', function(e){
+  $( 'body' ).on( 'mouseover', 'div', function(e){
     addSplitControls(this)
   })
 
-  $( 'body' ).on( 'mouseleave', 'section', function(e){
+  $( 'body' ).on( 'mouseleave', 'div', function(e){
     e.stopPropagation()
     $('#splitControls').remove()
     $('#optionsModal').remove()
   })
 
   $( 'body' ).on( 'click', '#splitControls img', function(){
-    var parentSection = $(this).parent().parent()
-    var grandParent = parentSection.parent()
+    var parentDiv = $(this).parent().parent()
+    var grandParent = parentDiv.parent()
     var action = $(this).data('layout-action')
 
     /*//////////////////////////////////////
     // Split current row in two
     //////////////////////////////////////*/
     if (action == 'splitvertical'){
-      parentSection.append( '\n<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      parentSection.append( '\n<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      $(parentSection).addClass( 'rowParent' )
-      $(parentSection).find( 'section' )
+      parentDiv.append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentDiv.append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      $(parentDiv).addClass( 'rowParent' )
+      $(parentDiv).find( 'div' )
         .addClass( 'flexChild' )
         .data( 'flexsize', 1 )
     }
@@ -105,10 +105,10 @@ $(document).ready( function(){
     // Split current column in two
     //////////////////////////////////////*/
     else if (action == 'splithorizontal'){
-      parentSection.append( '\n<section id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      parentSection.append( '\n<section id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      $(parentSection).addClass( 'columnParent' )
-      $(parentSection).find( 'section' )
+      parentDiv.append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentDiv.append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      $(parentDiv).addClass( 'columnParent' )
+      $(parentDiv).find( 'div' )
         .addClass( 'flexChild' )
         .data( 'flexsize', 1 )
     }
@@ -118,8 +118,8 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addvertical'){
       if( grandParent.hasClass( 'rowParent' )){
-        $(grandParent).append( '\n<section id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-        $(grandParent).find( 'section' ).addClass( 'flexChild' )
+        $(grandParent).append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+        $(grandParent).find( 'div' ).addClass( 'flexChild' )
       }
       else {
         alert( 'You need to split vertically first.')
@@ -131,8 +131,8 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addhorizontal'){
      if( grandParent.hasClass( 'columnParent' )){
-        $(grandParent).append( '\n<section id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-        $(grandParent).find( 'section' ).addClass( 'flexChild' )
+        $(grandParent).append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+        $(grandParent).find( 'div' ).addClass( 'flexChild' )
       }
       else {
         alert( 'You need to split horizontally first.')
@@ -141,14 +141,14 @@ $(document).ready( function(){
 
     else if(action == 'options'){
       $('#splitControls').remove()
-      parentSection.append( '<div id="optionsModal">' )
+      parentDiv.append( '<div id="optionsModal">' )
       var dimension = grandParent.hasClass( 'columnParent' ) ? 'height' : 'width'
       var parentDimension = grandParent.parent().hasClass( 'columnParent' ) ? 'height' : 'width'
 
 
-      $( '#optionsModal' ).append( '<img src="img/expand.png" id="growSectionButton" alt="Expand section" title="Expand section"></img>')
-                          .append( '<img src="img/shrink.png" id="shrinkSectionButton" alt="Shrink section" title="Shrink section"></img>')
-                          .append( '<img id="removeSectionButton" src="img/trash.png" alt="Delete section" title="Delete section"></img><br>' )
+      $( '#optionsModal' ).append( '<img src="img/expand.png" id="growDivButton" alt="Expand div" title="Expand div"></img>')
+                          .append( '<img src="img/shrink.png" id="shrinkDivButton" alt="Shrink div" title="Shrink div"></img>')
+                          .append( '<img id="removeDivButton" src="img/trash.png" alt="Delete div" title="Delete div"></img><br>' )
                           .append( '<input id="dimensionSizeInput" type="text" placeholder="Fixed ' + dimension + '"><br>' )
                           .append( '<button id="enterDimensionButton">Enter</button><br>')
 
@@ -157,30 +157,30 @@ $(document).ready( function(){
                             .append( '<button id="enterParentDimensionButton">Enter</button><br>')
       }
 
-      $( '#growSectionButton' ).on( 'click', function(){
-        parentSection.css({
-          'flex-grow': parentSection.data( 'flexsize' ) + 1
+      $( '#growDivButton' ).on( 'click', function(){
+        parentDiv.css({
+          'flex-grow': parentDiv.data( 'flexsize' ) + 1
         })
-        CSSOverrides[ parentSection.attr( 'id' ) ] = parentSection.attr( 'style' )
+        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
 
-      $( '#shrinkSectionButton' ).on( 'click', function(){
-        if (parentSection.data( 'flexsize' ) <= 2){
-          parentSection.css({
-            'flex-grow': parentSection.data( 'flexsize' ) - 1
+      $( '#shrinkDivButton' ).on( 'click', function(){
+        if (parentDiv.data( 'flexsize' ) <= 2){
+          parentDiv.css({
+            'flex-grow': parentDiv.data( 'flexsize' ) - 1
           })
         }
-        CSSOverrides[ parentSection.attr( 'id' ) ] = parentSection.attr( 'style' )
+        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
 
       $( '#enterDimensionButton' ).on( 'click', function(){
-        parentSection.css({
+        parentDiv.css({
           'flex': ' none',
         })
         .css(dimension, $( '#dimensionSizeInput' ).val())
-        CSSOverrides[ parentSection.attr( 'id' ) ] = parentSection.attr( 'style' )
+        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
 
@@ -189,13 +189,13 @@ $(document).ready( function(){
           'flex': ' none',
         })
         .css(parentDimension, $( '#parentDimensionSizeInput' ).val())
-        CSSOverrides[ parentSection.attr( 'id' ) ] = parentSection.attr( 'style' )
+        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
 
-      $( '#removeSectionButton' ).on( 'click', function(){
-       parentSection.remove()
-       delete CSSOverrides[ parentSection.attr( 'id' )]
+      $( '#removeDivButton' ).on( 'click', function(){
+       parentDiv.remove()
+       delete CSSOverrides[ parentDiv.attr( 'id' )]
        $( '#optionsModal' ).remove()
       })
     }

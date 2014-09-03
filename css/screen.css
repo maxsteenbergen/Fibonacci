@@ -37,13 +37,15 @@ span{
   font-size: 1em;
   margin: 13px;
 }
+div{
+  outline: 1px solid hsla(200,100%,90%,0.2);
+  background-color: hsla(200,100%,1%,0.1);
+}
 
 #codeExportTextarea, #container{
   width: 100%;
-  height: 600px;
+  height: 600px !important;
   position: absolute;
-  //left: 50%;
-  //margin-left: -400px;
   top: 180px;
 }
 
@@ -67,7 +69,10 @@ span{
   margin-bottom: 10px;
   opacity: 0.6
 }
-
+#splitControls{
+  outline: none;
+  background-color: transparent;
+}
 #splitControls img{
   margin: 15px 5px;
   opacity: 0.7;
@@ -135,11 +140,6 @@ input:-moz-placeholder { color:hsla(200,100%,90%,1); }
   background-image: -webkit-linear-gradient(0deg, #1A658D 0%, #6CBFDA 100%);
   background-image: -ms-linear-gradient(0deg, #1A658D 0%, #6CBFDA 100%);
   background-image: linear-gradient(0deg, #1A658D 0%, #6CBFDA 100%);
-}
-
-section{
-  outline: 1px solid hsla(200,100%,90%,0.2);
-  background-color: hsla(200,100%,1%,0.1);
 }
 
 footer{
