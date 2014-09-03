@@ -47,7 +47,8 @@ $(document).ready( function(){
       'After you\'ve made your horizontal or vertical split, you can then add a new sibling, shrink or expand, give it a fixed width/height, remove or split it again.' +
       'Remember to add a unit when you enter a fixed width or height!\n' +
       'Once you\'re happy with the layout, hit the export icons to copy the generated code and paste it wherever you need it in your own code. \n\n' +
-      'Tiny sidenote: Fibonacci is mostly a little sideproject and by no means perfect or bug free. Contributions are highly welcome :)'
+      'Tiny sidenote: Fibonacci is mostly a little sideproject and by no means perfect or bug free. Contributions are highly welcome :)\n\n'+
+      'Fibonacci does *not* use the Fibonacci sequence in any way, despite reports to the contrary. The reasoning behind the name  is simple. While testing the tool, I divided the main container into a Fibonacci-esque structure. That\'s it. The structured reminded me of Fibonacci, I liked the ring of it, I called the tool Fibonacci. The End.'
 
 
       $( '#codeExportTextarea' ).css('display', 'block').val( code )
