@@ -104,8 +104,8 @@ $(document).ready( function(){
     // Split current column in two
     //////////////////////////////////////*/
     else if (action == 'splithorizontal'){
-      parentSection.append( '\n<section class="columnSection" id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      parentSection.append( '\n<section class="columnSection" id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentSection.append( '\n<section id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
+      parentSection.append( '\n<section id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
       $(parentSection).addClass( 'columnParent' )
       $(parentSection).find( 'section' )
         .addClass( 'flexChild' )
