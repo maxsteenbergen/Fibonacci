@@ -12,6 +12,16 @@ $(document).ready( function(){
     clone.remove()
   }
 
+  function insertIndentation (distanceToContainer) {
+    var indentation = '';
+    for (var i = 0; i <= distanceToContainer; i++) {
+      (function(){
+        indentation += '  '
+      }(i))
+    }
+    return indentation
+  }
+
   $( '#triggerHTMLCode' ).on( 'click', function(){
     if( $(this).css('opacity') == 1 ){
       $( '#codeExportTextarea' ).css( 'display', 'none' )
@@ -97,13 +107,16 @@ $(document).ready( function(){
     var parentDiv = $(this).parent().parent()
     var grandParent = parentDiv.parent()
     var action = $(this).data('layout-action')
+    var indentCount = 0
+    if( $(parentDiv)[0].id != 'container' )
+      indentCount = (parentDiv.parentsUntil($('#container')).andSelf().length)  
 
     /*//////////////////////////////////////
     // Split current row in two
     //////////////////////////////////////*/
     if (action == 'splitvertical'){
-      parentDiv.append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
-              .append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+      parentDiv.append( '\n' + insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .append( '\n' + insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .addClass( 'rowParent' )
               .find( 'div' )
                 .addClass( 'flexChild' )
@@ -114,8 +127,8 @@ $(document).ready( function(){
     // Split current column in two
     //////////////////////////////////////*/
     else if (action == 'splithorizontal'){
-      parentDiv.append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
-              .append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+      parentDiv.append( '\n' + insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .append( '\n' + insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .addClass( 'columnParent' )
               .find( 'div' )
                 .addClass( 'flexChild' )
@@ -127,7 +140,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addvertical'){
       if( grandParent.hasClass( 'rowParent' )){
-        $(grandParent).append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+        $(grandParent).append( '\n' + insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
                         .addClass( 'flexChild' )
       }
@@ -141,7 +154,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addhorizontal'){
      if( grandParent.hasClass( 'columnParent' )){
-        $(grandParent).append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+        $(grandParent).append( '\n' + insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
                       .addClass( 'flexChild' )
       }
