@@ -2,6 +2,16 @@ $(document).ready( function(){
 
   var CSSOverrides = {}
 
+  function getUnstyledMarkup() {
+    var clone = $('#container').clone()
+    var elements = clone.find('div')
+    for (var i = elements.length - 1; i >= 0; i--) {
+      elements[i].removeAttribute('style');
+    };
+    return $(clone)[0].outerHTML.toString()
+    clone.remove()
+  }
+
   $( '#triggerHTMLCode' ).on( 'click', function(){
     if( $(this).css('opacity') == 1 ){
       $( '#codeExportTextarea' ).css( 'display', 'none' )
@@ -10,8 +20,7 @@ $(document).ready( function(){
     else {
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
-      var code = $('#container')[0].outerHTML.toString()
-      $( '#codeExportTextarea' ).css('display', 'block').val( code )
+      $( '#codeExportTextarea' ).css('display', 'block').val( getUnstyledMarkup() )
     }
   })
 
@@ -94,7 +103,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     if (action == 'splitvertical'){
       parentDiv.append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
-              .append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .addClass( 'rowParent' )
               .find( 'div' )
                 .addClass( 'flexChild' )
@@ -106,7 +115,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if (action == 'splithorizontal'){
       parentDiv.append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
-              .append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .addClass( 'columnParent' )
               .find( 'div' )
                 .addClass( 'flexChild' )
@@ -118,7 +127,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addvertical'){
       if( grandParent.hasClass( 'rowParent' )){
-        $(grandParent).append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+        $(grandParent).append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
                         .addClass( 'flexChild' )
       }
@@ -132,7 +141,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addhorizontal'){
      if( grandParent.hasClass( 'columnParent' )){
-        $(grandParent).append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+        $(grandParent).append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
                       .addClass( 'flexChild' )
       }
