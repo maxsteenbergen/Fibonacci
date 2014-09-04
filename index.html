@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Fibonacci by maxsteenbergen</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Fibonacci</h1>
+        <h2>Flexbox page layout composer</h2>
+        <a href="https://github.com/maxsteenbergen/Fibonacci" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><img src="https://raw.githubusercontent.com/maxsteenbergen/Fibonacci/master/img/fibonacci_icon_blue@2x.png" alt="alt text" title="Fibonacci"></p>
+
+<h1>
+<a name="fibonacci" class="anchor" href="#fibonacci"><span class="octicon octicon-link"></span></a>Fibonacci</h1>
+
+<h2>
+<a name="flexbox-page-layout-composer" class="anchor" href="#flexbox-page-layout-composer"><span class="octicon octicon-link"></span></a>Flexbox page layout composer</h2>
+
+<p>Fibonacci is an offshoot of an internal tool created to let non-developers design page layouts using Flexbox, without having to learn HTML or CSS. Live demo <a href="http://maxsteenbergen.com/fibonacci/">here.</a><br>
+Fibonacci starts with a blank <code>&lt;div&gt;</code> , which you can then split to your heart's content. It generates both the HTML and CSS needed to recreate the layout in your own pages.</p>
+
+<p>After you've made your horizontal or vertical split, you can then add a new sibling, shrink or expand, give it a fixed width/height, remove or split it again. Remember to add a unit when you enter a fixed width or height!
+Once you're happy with the layout, hit the export icons to copy the generated code and paste it wherever you need it in your own code.</p>
+
+<p>Tiny sidenote: Fibonacci is mostly a little sideproject still under development and by no means perfect or bug free. Contributions are highly welcome :)</p>
+
+<h3>
+<a name="notes" class="anchor" href="#notes"><span class="octicon octicon-link"></span></a>Notes</h3>
+
+<p><strong>Q: <em>How is the/a Fibonacci sequence used in this tool?</em></strong>
+<strong>A:</strong> It absolutely isn’t. Nothing in the code, as you can see for yourself, uses any kind of Fibonacci sequence. Nuh-uh.</p>
+
+<p><strong>Q: <em>Then why is it named Fibonacci?</em></strong>
+<strong>A:</strong> There’s 1 reason, and 1 reason only. While testing the tool, I divided the main container into a Fibonacci-esque structure. That’s it. The structured reminded me of Fibonacci, I liked the ring of it, I called the tool Fibonacci. Fin.</p>
+
+<p><strong>Q: <em>The main <code>#container</code> div is 100% * 600px. What's up with that?</em></strong>
+<strong>A:</strong> The beauty of Flexbox is that it's flexible. Whatever the dimensions of your container or even the viewport, Flexbox adapts automatically. It's completely fluid. So all you need to do is to give the <code>#container</code> div the dimensions you need, and all child div's made with Fibonacci will resize accordingly.</p>
+
+<p><strong>Q: <em>Does Fibonacci only split div's in half?</em></strong>
+<strong>A:</strong> Only as a starting point. In the Options window, you'll find icons that allow you to grow or shrink each div' with increments of 50%. This is standard in the Flexbox spec.</p>
+
+<p><strong>Q: <em>What if I want 3 or more equal div's?</em></strong>
+<strong>A:</strong> Simple. First split the <code>#container</code> div either horizontally or vertically, so you get two equal div's. Then, instead of splitting each div' in half again, hit the <em>'Add Sibling'</em> icon for as many times as you need.</p>
+
+<p><strong>Q: <em>Can I mix Flexbox with fixed dimensions?</em></strong>
+<strong>A:</strong> Absolutely. Once you've made a first split, you can enter a fixed dimension in the Options window. <strong>Be sure to include a unit!</strong> Fibonacci also allows the same method for a div's parent.
+Note however, that a div's parent defines what dimension you can assign a fixed width to. Fibonacci is quite opinionated and so by default stretches all div's to fill their respective parent. Small example: if you've split a column in 2, and want to give one of those 2 div's a fixed dimension, you can only enter a fixed height. For a fixed width in this example, Fibonacci provides a second input to edit the parent's dimension.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/maxsteenbergen/Fibonacci/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/maxsteenbergen/Fibonacci/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/maxsteenbergen/Fibonacci"></a> is maintained by <a href="https://github.com/maxsteenbergen">maxsteenbergen</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-22784118-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
