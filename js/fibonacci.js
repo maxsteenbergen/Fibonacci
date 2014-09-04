@@ -26,7 +26,7 @@ $(document).ready( function(){
       $.get( 'css/fibonacci.css' ).then(function(cssCode, status, xhr){
         var overrides = ''
         for (var i = Object.keys(CSSOverrides).length - 1; i >= 0; i--) {
-          overrides += '#' + Object.keys(CSSOverrides)[i] + '{ ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '}\n'
+          overrides += '#' + Object.keys(CSSOverrides)[i] + '{\n  ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '\n}\n'
         }
         $( '#codeExportTextarea' ).css('display', 'block').val( cssCode + '\n\n' + overrides )
       })
@@ -93,24 +93,24 @@ $(document).ready( function(){
     // Split current row in two
     //////////////////////////////////////*/
     if (action == 'splitvertical'){
-      parentDiv.append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      parentDiv.append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      $(parentDiv).addClass( 'rowParent' )
-      $(parentDiv).find( 'div' )
-        .addClass( 'flexChild' )
-        .data( 'flexsize', 1 )
+      parentDiv.append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .addClass( 'rowParent' )
+              .find( 'div' )
+                .addClass( 'flexChild' )
+                .data( 'flexsize', 1 )
     }
 
     /*//////////////////////////////////////
     // Split current column in two
     //////////////////////////////////////*/
     else if (action == 'splithorizontal'){
-      parentDiv.append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      parentDiv.append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-      $(parentDiv).addClass( 'columnParent' )
-      $(parentDiv).find( 'div' )
-        .addClass( 'flexChild' )
-        .data( 'flexsize', 1 )
+      parentDiv.append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+              .addClass( 'columnParent' )
+              .find( 'div' )
+                .addClass( 'flexChild' )
+                .data( 'flexsize', 1 )
     }
 
     /*//////////////////////////////////////
@@ -118,8 +118,9 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addvertical'){
       if( grandParent.hasClass( 'rowParent' )){
-        $(grandParent).append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-        $(grandParent).find( 'div' ).addClass( 'flexChild' )
+        $(grandParent).append( '\n<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+                      .find( 'div' )
+                        .addClass( 'flexChild' )
       }
       else {
         alert( 'You need to split vertically first.')
@@ -131,8 +132,9 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addhorizontal'){
      if( grandParent.hasClass( 'columnParent' )){
-        $(grandParent).append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '">' )
-        $(grandParent).find( 'div' ).addClass( 'flexChild' )
+        $(grandParent).append( '\n<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
+                      .find( 'div' )
+                      .addClass( 'flexChild' )
       }
       else {
         alert( 'You need to split horizontally first.')
@@ -177,7 +179,7 @@ $(document).ready( function(){
 
       $( '#enterDimensionButton' ).on( 'click', function(){
         parentDiv.css({
-          'flex': ' none',
+          'flex': ' none'
         })
         .css(dimension, $( '#dimensionSizeInput' ).val())
         CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
@@ -186,7 +188,7 @@ $(document).ready( function(){
 
       $( '#enterParentDimensionButton' ).on( 'click', function(){
         grandParent.css({
-          'flex': ' none',
+          'flex': ' none'
         })
         .css(parentDimension, $( '#parentDimensionSizeInput' ).val())
         CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
@@ -202,6 +204,4 @@ $(document).ready( function(){
 
     $( '#splitControls' ).remove()
   })
-
-
 })
