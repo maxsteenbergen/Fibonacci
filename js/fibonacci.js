@@ -8,15 +8,20 @@ $(document).ready( function(){
     for (var i = elements.length - 1; i >= 0; i--) {
       elements[i].removeAttribute('style');
     };
-    return $(clone)[0].outerHTML.toString()
+    var returnString = $(clone)[0].outerHTML.toString()
+    returnString = returnString.replace(regex = new RegExp('</div></div>',"g"), '</div>\n</div>')
+                                .replace(/\</g,'&lt;')
+                                .replace(/\>/g,'&gt;')
+
+    return returnString
     clone.remove()
   }
 
   function insertIndentation (distanceToContainer) {
-    var indentation = '';
+    var indentation = '\n';
     for (var i = 0; i <= distanceToContainer; i++) {
       (function(){
-        indentation += '  '
+        indentation += '\t'
       }(i))
     }
     return indentation
@@ -30,7 +35,11 @@ $(document).ready( function(){
     else {
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
-      $( '#codeExportTextarea' ).css('display', 'block').val( getUnstyledMarkup() )
+      $( '#codeExportTextarea' ).empty().css('display', 'block').removeClass().addClass('html').append(getUnstyledMarkup())
+      hljs.configure({
+        tabReplace: '  '
+      })
+      hljs.highlightBlock($('#codeExportTextarea')[0])
     }
   })
 
@@ -45,9 +54,10 @@ $(document).ready( function(){
       $.get( 'css/fibonacci.css' ).then(function(cssCode, status, xhr){
         var overrides = ''
         for (var i = Object.keys(CSSOverrides).length - 1; i >= 0; i--) {
-          overrides += '#' + Object.keys(CSSOverrides)[i] + '{\n  ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '\n}\n'
+          overrides += '#' + Object.keys(CSSOverrides)[i] + '{  ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '}'
         }
-        $( '#codeExportTextarea' ).css('display', 'block').val( cssCode + '\n\n' + overrides )
+        $( '#codeExportTextarea' ).empty().css('display', 'block').removeClass().addClass('css').append( cssCode + '' + overrides )
+        hljs.highlightBlock($('#codeExportTextarea')[0])
       })
     }
   })
@@ -61,16 +71,16 @@ $(document).ready( function(){
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
       var code =
-      'Fibonacci is an offshoot of an internal tool created to let non-developers design page layouts using Flexbox, without having to learn HTML or CSS. \n\n' +
-      'Fibonacci starts with a blank <div>, which you can then split to your heart\'s content. It generates both the HTML and CSS needed to recreate the layout in your own pages.\n' +
-      'After you\'ve made your horizontal or vertical split, you can then add a new sibling, shrink or expand, give it a fixed width/height, remove or split it again.' +
-      'Remember to add a unit when you enter a fixed width or height!\n' +
-      'Once you\'re happy with the layout, hit the export icons to copy the generated code and paste it wherever you need it in your own code. \n\n' +
-      'Tiny sidenote: Fibonacci is mostly a little sideproject and by no means perfect or bug free. Contributions are highly welcome :)\n\n'+
-      'Fibonacci does *not* use the Fibonacci sequence in any way, despite reports to the contrary. The reasoning behind the name  is simple. While testing the tool, I divided the main container into a Fibonacci-esque structure. That\'s it. The structured reminded me of Fibonacci, I liked the ring of it, I called the tool Fibonacci. The End.'
+      '<p>Fibonacci is an offshoot of an internal tool created to let non-developers design page layouts using Flexbox, without having to learn HTML or CSS.</p>' +
+      '<p>Fibonacci starts with a blank &lt;div&gt;, which you can then split to your heart\'s content. It generates both the HTML and CSS needed to recreate the layout in your own pages.' +
+      'After you\'ve made your horizontal or vertical split, you can then add a new sibling, shrink or expand, give it a fixed width/height, remove or split it again.<br>' +
+      'Remember to add a unit when you enter a fixed width or height!</p>' +
+      '<p>Once you\'re happy with the layout, hit the export icons to copy the generated code and paste it wherever you need it in your own code.</p>' +
+      '<p>Fibonacci does *not* use the Fibonacci sequence in any way, despite reports to the contrary. The reasoning behind the name  is simple. While testing the tool, I divided the main container into a Fibonacci-esque structure. That\'s it. The structured reminded me of Fibonacci, I liked the ring of it, I called the tool Fibonacci. The End.</p>' +
+      '<p>Tiny sidenote: Fibonacci is mostly a little sideproject and by no means perfect or bug free. Contributions are highly welcome :)</p>'
 
 
-      $( '#codeExportTextarea' ).css('display', 'block').val( code )
+      $( '#codeExportTextarea' ).empty().css('display', 'block').removeClass().append( code )
     }
   })
 
@@ -115,8 +125,8 @@ $(document).ready( function(){
     // Split current row in two
     //////////////////////////////////////*/
     if (action == 'splitvertical'){
-      parentDiv.append( '\n' + insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
-              .append( '\n' + insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+      parentDiv.append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+              .append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div\n>' )
               .addClass( 'rowParent' )
               .find( 'div' )
                 .addClass( 'flexChild' )
@@ -127,8 +137,8 @@ $(document).ready( function(){
     // Split current column in two
     //////////////////////////////////////*/
     else if (action == 'splithorizontal'){
-      parentDiv.append( '\n' + insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>' )
-              .append( '\n' + insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+      parentDiv.append( insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+              .append( insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .addClass( 'columnParent' )
               .find( 'div' )
                 .addClass( 'flexChild' )
@@ -140,7 +150,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addvertical'){
       if( grandParent.hasClass( 'rowParent' )){
-        $(grandParent).append( '\n' + insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+        $(grandParent).append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
                         .addClass( 'flexChild' )
       }
@@ -154,7 +164,7 @@ $(document).ready( function(){
     //////////////////////////////////////*/
     else if(action == 'addhorizontal'){
      if( grandParent.hasClass( 'columnParent' )){
-        $(grandParent).append( '\n' + insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
+        $(grandParent).append( insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
                       .addClass( 'flexChild' )
       }

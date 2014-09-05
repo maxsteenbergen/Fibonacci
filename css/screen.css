@@ -18,7 +18,7 @@ body{
   background-size: contain;
 }
 
-h1, h2, span{
+h1, h2, span.action{
   font-family: Avenir;
   color: hsla(200,100%,90%,1);
   text-align: left;
@@ -32,7 +32,7 @@ h2{
   font-weight: normal;
   margin-top: -10px
 }
-span{
+span.action{
   padding: 0;
   font-size: 1em;
   margin: 13px;
@@ -60,6 +60,14 @@ div{
   color: hsla(200,100%,90%,1);
   display: none;
   outline: none;
+  overflow-y: scroll;
+  text-align: left; 
+  white-space: pre-wrap;
+}
+#codeExportTextarea p{
+  width: 600px;
+  margin: 0 auto;
+  margin-bottom: 15px;
 }
 
 #triggerHTMLCode, #triggerCSSCode, #triggerInfo{
