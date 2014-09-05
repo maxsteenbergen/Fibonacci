@@ -19,7 +19,7 @@ body{
 }
 
 h1, h2, span.action{
-  font-family: Avenir;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   color: hsla(200,100%,90%,1);
   text-align: left;
   font-size: 2.5em;
