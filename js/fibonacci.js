@@ -243,7 +243,7 @@ $(document).ready( function(){
           'flex': ' none'
         })
         .css(parentDimension, $( '#parentDimensionSizeInput' ).val())
-        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
+        CSSOverrides[ grandParent.attr( 'id' ) ] = grandParent.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
 
