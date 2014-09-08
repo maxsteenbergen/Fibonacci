@@ -1,13 +1,16 @@
+//TODO: data-flexsize shenanigans
+
 $(document).ready( function(){
 
   var CSSOverrides = {}
 
-  function getUnstyledMarkup() {
-    var clone = $('#container').clone()
-    var elements = clone.find('div')
+  function getUnstyledMarkup(){
+    var clone = $('#container').clone(),
+        elements = clone.find('div')
     for (var i = elements.length - 1; i >= 0; i--) {
-      elements[i].removeAttribute('style');
-    };
+      elements[i].removeAttribute('style')
+    }
+    
     var returnString = $(clone)[0].outerHTML.toString()
     returnString = returnString.replace(regex = new RegExp('</div></div>',"g"), '</div>\n</div>')
                                 .replace(/\</g,'&lt;')
@@ -17,9 +20,9 @@ $(document).ready( function(){
     clone.remove()
   }
 
-  function insertIndentation (distanceToContainer) {
-    var indentation = '\n';
-    for (var i = 0; i <= distanceToContainer; i++) {
+  function insertIndentation (distanceToContainer){
+    var indentation = '\n'
+    for (var i = 0; i <= distanceToContainer; i++){
       (function(){
         indentation += '\t'
       }(i))
@@ -35,7 +38,11 @@ $(document).ready( function(){
     else {
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
-      $( '#codeExportTextarea' ).empty().css('display', 'block').removeClass().addClass('html').append(getUnstyledMarkup())
+      $( '#codeExportTextarea' ).empty()
+                                .css('display', 'block')
+                                .removeClass()
+                                .addClass('html')
+                                .append(getUnstyledMarkup())
       hljs.configure({
         tabReplace: '  '
       })
@@ -51,12 +58,15 @@ $(document).ready( function(){
     else {
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
-      $.get( 'css/fibonacci.css' ).then(function(cssCode, status, xhr){
+      $.get( 'css/fibonacci.css' ).then( function( cssCode, status, xhr ){
         var overrides = ''
         for (var i = Object.keys(CSSOverrides).length - 1; i >= 0; i--) {
           overrides += '#' + Object.keys(CSSOverrides)[i] + '{  ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '}'
         }
-        $( '#codeExportTextarea' ).empty().css('display', 'block').removeClass().addClass('css').append( cssCode + '' + overrides )
+        $( '#codeExportTextarea' ).empty()
+                                  .css('display', 'block')
+                                  .removeClass().addClass('css')
+                                  .append( cssCode + '' + overrides )
         hljs.highlightBlock($('#codeExportTextarea')[0])
       })
     }
@@ -70,6 +80,7 @@ $(document).ready( function(){
     else {
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
+      
       var code =
       '<p>Fibonacci is an offshoot of an internal tool created to let non-developers design page layouts using Flexbox, without having to learn HTML or CSS.</p>' +
       '<p>Fibonacci starts with a blank &lt;div&gt;, which you can then split to your heart\'s content. It generates both the HTML and CSS needed to recreate the layout in your own pages.' +
@@ -79,17 +90,19 @@ $(document).ready( function(){
       '<p>Fibonacci does *not* use the Fibonacci sequence in any way, despite reports to the contrary. The reasoning behind the name  is simple. While testing the tool, I divided the main container into a Fibonacci-esque structure. That\'s it. The structured reminded me of Fibonacci, I liked the ring of it, I called the tool Fibonacci. The End.</p>' +
       '<p>Tiny sidenote: Fibonacci is mostly a little sideproject and by no means perfect or bug free. Contributions are highly welcome :)</p>'
 
-
-      $( '#codeExportTextarea' ).empty().css('display', 'block').removeClass().append( code )
+      $( '#codeExportTextarea' ).empty()
+                                .css('display', 'block')
+                                .removeClass()
+                                .append( code )
     }
   })
 
-  function addSplitControls(srcDiv){
+  function addSplitControls( srcDiv ){
     var parent = $(srcDiv).parent()
     if( $( '#splitControls' ).length == 0 && $( '#optionsModal' ).length == 0){
       $( srcDiv ).append( '<div id="splitControls">' )
       $( '#splitControls' ).append( '<img id="splitVerticalIcon" data-layout-action="splitvertical" src="img/splitvertical.png" alt="Split vertically">' )
-      $( '#splitControls' ).append( '<img id="splitHorizontalIcon" data-layout-action="splithorizontal" src="img/splithorizontal.png" alt="Split horizontally" title="Split horizontally">' )
+                            .append( '<img id="splitHorizontalIcon" data-layout-action="splithorizontal" src="img/splithorizontal.png" alt="Split horizontally" title="Split horizontally">' )
 
       if( parent.hasClass( 'columnParent' ))
         $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="addhorizontal" src="img/addhorizontal.png" alt="Add horizontal sibling" title="Add horizontal sibling">' )
@@ -114,10 +127,11 @@ $(document).ready( function(){
   })
 
   $( 'body' ).on( 'click', '#splitControls img', function(){
-    var parentDiv = $(this).parent().parent()
-    var grandParent = parentDiv.parent()
-    var action = $(this).data('layout-action')
-    var indentCount = 0
+    var parentDiv = $(this).parent().parent(),
+        grandParent = parentDiv.parent(),
+        action = $(this).data('layout-action'),
+        indentCount = 0
+    
     if( $(parentDiv)[0].id != 'container' )
       indentCount = (parentDiv.parentsUntil($('#container')).andSelf().length)  
 
@@ -153,6 +167,7 @@ $(document).ready( function(){
         $(grandParent).append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
                         .addClass( 'flexChild' )
+                        .data( 'flexsize', 1 )
       }
       else {
         alert( 'You need to split vertically first.')
@@ -166,19 +181,22 @@ $(document).ready( function(){
      if( grandParent.hasClass( 'columnParent' )){
         $(grandParent).append( insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
                       .find( 'div' )
-                      .addClass( 'flexChild' )
+                        .addClass( 'flexChild' )
+                        .data( 'flexsize', 1 )
       }
       else {
         alert( 'You need to split horizontally first.')
       }
     }
-
+    
+    /*//////////////////////////////////////
+    // Open additional options modal
+    //////////////////////////////////////*/
     else if(action == 'options'){
       $('#splitControls').remove()
       parentDiv.append( '<div id="optionsModal">' )
-      var dimension = grandParent.hasClass( 'columnParent' ) ? 'height' : 'width'
-      var parentDimension = grandParent.parent().hasClass( 'columnParent' ) ? 'height' : 'width'
-
+      var dimension = grandParent.hasClass( 'columnParent' ) ? 'height' : 'width',
+          parentDimension = grandParent.parent().hasClass( 'columnParent' ) ? 'height' : 'width'
 
       $( '#optionsModal' ).append( '<img src="img/expand.png" id="growDivButton" alt="Expand div" title="Expand div"></img>')
                           .append( '<img src="img/shrink.png" id="shrinkDivButton" alt="Shrink div" title="Shrink div"></img>')
@@ -190,7 +208,8 @@ $(document).ready( function(){
         $( '#optionsModal' ).append( '<input id="parentDimensionSizeInput" placeholder="Parent\'s ' + parentDimension + '" type="text">' )
                             .append( '<button id="enterParentDimensionButton">Enter</button><br>')
       }
-
+      
+      // Increase flexsize
       $( '#growDivButton' ).on( 'click', function(){
         parentDiv.css({
           'flex-grow': parentDiv.data( 'flexsize' ) + 1
@@ -198,9 +217,10 @@ $(document).ready( function(){
         CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
-
+      
+      // Decrease flexsize
       $( '#shrinkDivButton' ).on( 'click', function(){
-        if (parentDiv.data( 'flexsize' ) <= 2){
+        if (parentDiv.data( 'flexsize' ) >= 1){
           parentDiv.css({
             'flex-grow': parentDiv.data( 'flexsize' ) - 1
           })
