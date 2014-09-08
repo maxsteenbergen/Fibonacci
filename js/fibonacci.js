@@ -61,7 +61,7 @@ $(document).ready( function(){
       $.get( 'css/fibonacci.css' ).then( function( cssCode, status, xhr ){
         var overrides = ''
         for (var i = Object.keys(CSSOverrides).length - 1; i >= 0; i--) {
-          overrides += '#' + Object.keys(CSSOverrides)[i] + '{  ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '}'
+          overrides += '\n\n#' + Object.keys(CSSOverrides)[i] + '{\n  ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '\n}'
         }
         $( '#codeExportTextarea' ).empty()
                                   .css('display', 'block')
@@ -142,9 +142,11 @@ $(document).ready( function(){
       parentDiv.append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div\n>' )
               .addClass( 'rowParent' )
-              .find( 'div' )
-                .addClass( 'flexChild' )
-                .data( 'flexsize', 1 )
+              .find( 'div' ).not('#splitControls').each(function(){
+                $(this).addClass( 'flexChild' )
+                if( $(this).data( 'flexsize') == undefined)
+                    $(this).data( 'flexsize', 1 )
+              })
     }
 
     /*//////////////////////////////////////
@@ -154,9 +156,11 @@ $(document).ready( function(){
       parentDiv.append( insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .append( insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
               .addClass( 'columnParent' )
-              .find( 'div' )
-                .addClass( 'flexChild' )
-                .data( 'flexsize', 1 )
+              .find( 'div' ).not('#splitControls').each(function(){
+                $(this).addClass( 'flexChild' )
+                if( $(this).data( 'flexsize') == undefined)
+                    $(this).data( 'flexsize', 1 )
+              })
     }
 
     /*//////////////////////////////////////
@@ -165,9 +169,11 @@ $(document).ready( function(){
     else if(action == 'addvertical'){
       if( grandParent.hasClass( 'rowParent' )){
         $(grandParent).append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
-                      .find( 'div' )
-                        .addClass( 'flexChild' )
-                        .data( 'flexsize', 1 )
+                      .find( 'div' ).not('#splitControls').each(function(){
+                        $(this).addClass( 'flexChild' )
+                        if( $(this).data( 'flexsize') == undefined)
+                            $(this).data( 'flexsize', 1 )
+                      })
       }
       else {
         alert( 'You need to split vertically first.')
@@ -180,9 +186,11 @@ $(document).ready( function(){
     else if(action == 'addhorizontal'){
      if( grandParent.hasClass( 'columnParent' )){
         $(grandParent).append( insertIndentation(indentCount) + '<div id="columnChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
-                      .find( 'div' )
-                        .addClass( 'flexChild' )
-                        .data( 'flexsize', 1 )
+                      .find( 'div' ).not('#splitControls').each(function(){
+                        $(this).addClass( 'flexChild' )
+                        if( $(this).data( 'flexsize') == undefined)
+                            $(this).data( 'flexsize', 1 )
+                      })
       }
       else {
         alert( 'You need to split horizontally first.')
@@ -214,21 +222,24 @@ $(document).ready( function(){
         parentDiv.css({
           'flex-grow': parentDiv.data( 'flexsize' ) + 1
         })
+        parentDiv.data('flexsize', parentDiv.data( 'flexsize' ) + 1)
         CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
       
       // Decrease flexsize
       $( '#shrinkDivButton' ).on( 'click', function(){
-        if (parentDiv.data( 'flexsize' ) >= 1){
+        if (parentDiv.data( 'flexsize' ) > 1){
           parentDiv.css({
             'flex-grow': parentDiv.data( 'flexsize' ) - 1
           })
+          parentDiv.data('flexsize', parentDiv.data( 'flexsize' ) - 1)
+          CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         }
-        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
-
+      
+      // Enter fixed width/height for current div
       $( '#enterDimensionButton' ).on( 'click', function(){
         parentDiv.css({
           'flex': ' none'
@@ -237,7 +248,8 @@ $(document).ready( function(){
         CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
-
+      
+      // Enter fixed width/height for current div's parent
       $( '#enterParentDimensionButton' ).on( 'click', function(){
         grandParent.css({
           'flex': ' none'
@@ -246,7 +258,8 @@ $(document).ready( function(){
         CSSOverrides[ grandParent.attr( 'id' ) ] = grandParent.attr( 'style' )
         $( '#optionsModal' ).remove()
       })
-
+      
+      // Remove current div from DOM
       $( '#removeDivButton' ).on( 'click', function(){
        parentDiv.remove()
        delete CSSOverrides[ parentDiv.attr( 'id' )]
