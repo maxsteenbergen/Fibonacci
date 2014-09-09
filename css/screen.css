@@ -41,19 +41,25 @@ div{
   outline: 1px solid hsla(200,100%,90%,0.2);
   background-color: hsla(200,100%,1%,0.1);
 }
+div.selected{
+  background-color: hsla(0, 0%, 100%, 0.75);
+}
 
-#codeExportTextarea, #container{
+#flexcanvas, #codeExportTextarea{
   width: 100%;
   height: 600px !important;
   position: absolute;
   top: 180px;
 }
-
+#flexcanvas div{
+  min-height: 10px;
+  min-width: 10px;
+}
 #codeExportTextarea{
   box-sizing: border-box;
   resize: none;
   border: none;
-  background-color: hsla(200,100%,1%,0.4);
+  background-color: hsla(200,100%,1%,0.6);
   padding: 50px;
   font-family: Courier;
   font-size: 16px;
@@ -78,6 +84,7 @@ div{
   opacity: 0.6
 }
 #splitControls{
+  position: absolute;
   outline: none;
   background-color: transparent;
 }
@@ -87,21 +94,24 @@ div{
   cursor: pointer;
 }
 
-#optionsModal{
+#optionsBar{
   box-sizing: border-box;
-  width: 150px;
-  position: absolute;
-  z-index: 99999;
-  border: 1px solid hsla(100, 100%, 100%, 0.6);
+  -webkit-box-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 200px;
+  outline: 1px solid hsla(100, 100%, 100%, 0.6);
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  padding: 10px;
-  border-radius: 10px;
+  padding: 20px;
   background-color: hsla(100, 100%, 100%, 0.5);
-  margin: 15px
+  text-align: left;
 }
 
-#optionsModal img{
+#optionsBar img{
   cursor: pointer;
+  margin: 5px;
+  margin-bottom: 15px;
 }
 
 ::-webkit-input-placeholder { color:hsla(200,100%,90%,1); }
@@ -109,8 +119,20 @@ div{
 :-ms-input-placeholder { color:hsla(200,100%,90%,1); } /* ie */
 input:-moz-placeholder { color:hsla(200,100%,90%,1); }
 
-#optionsModal input{
-  width: 110px;
+#optionsBar label{
+  font-family: Avenir;
+  font-size: 1.05em;
+  font-weight: bold;
+  color: hsla(200,100%,100%,0.8);
+  text-shadow: 0 -1px hsla(200,100%,0%,0.3);
+}
+#optionsBar select{
+  width: 160px;
+  margin-bottom: 15px;
+}
+#optionsBar input{
+  box-sizing: border-box;
+  width: 160px;
   height: 30px;
   -webkit-appearance: none;
   appearance: none;
@@ -119,7 +141,6 @@ input:-moz-placeholder { color:hsla(200,100%,90%,1); }
   border-right: 2px solid hsla(200,100%,90%,1);
   padding-right: 5px;
   background: none;
-  margin-top: 10px;
   font-family: Avenir;
   color: hsla(200,100%,10%,1);
   font-size: 1em;
@@ -127,9 +148,9 @@ input:-moz-placeholder { color:hsla(200,100%,90%,1); }
   outline: none;
 }
 
-#optionsModal button{
-  float: right;
-  margin: 5px;
+#optionsBar button{
+  width: 160px;
+  margin-bottom: 15px;
   font-family: Avenir;
   font-size: 1.05em;
   font-weight: bold;
@@ -149,6 +170,12 @@ input:-moz-placeholder { color:hsla(200,100%,90%,1); }
   background-image: -ms-linear-gradient(0deg, #1A658D 0%, #6CBFDA 100%);
   background-image: linear-gradient(0deg, #1A658D 0%, #6CBFDA 100%);
 }
+
+.disabled{
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 
 footer{
   box-sizing: border-box;

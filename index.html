@@ -12,9 +12,56 @@
     <h1>Fibonacci</h1>
     <h2>Flexbox Composer</h2>
   </header>
-  <div id='container'>
+  
+  <div id='flexcanvas' class='rowParent'>
+  <div id="optionsBar" class="disabled flexChild">
+    <img src="img/expand.png" id="growDivButton" alt="Expand div" title="Expand div"></img>
+    <img src="img/shrink.png" id="shrinkDivButton" alt="Shrink div" title="Shrink div"></img>
+    <img id="removeDivButton" src="img/trash.png" alt="Delete div" title="Delete div"></img>
+
+
+    <label for="justifyButton">Justification: </label>
+    <select id="justifyButton" alt="Set justification within parent" title="Set justification within parent">
+      <option val="flex-start">flex-start</option>
+      <option val="flex-end">flex-end</option>
+      <option val="center">center</option>
+      <option val="space-between">space-between</option>
+      <option val="space-around">space-around</option>
+    </select>
+
+    <label for="allAlignmentButton">Align within parent: </label>
+    <select id="allAlignmentButton" alt="Set alignment for all in parent" title="Set alignment for all in parent">
+      <option val="flex-start">flex-start</option>
+      <option val="flex-end">flex-end</option>
+      <option val="center">center</option>
+      <option val="baseline">baseline</option>
+      <option val="stretch">stretch</option>
+    </select>
+
+    <label for="singleAlignmentButton">Align single: </label>
+    <select id="singleAlignmentButton" alt="Set single alignment" title="Set single alignment">
+      <option val="auto">auto</option>
+      <option val="flex-start">flex-start</option>
+      <option val="flex-end">flex-end</option>
+      <option val="center">center</option>
+      <option val="baseline">baseline</option>
+      <option val="stretch">stretch</option>
+    </select>
+    
+    <input id="widthInput" type="text" placeholder="Fixed width">
+    <button id="enterWidthButton" title="width">Enter width</button>
+    <input id="heightInput" type="text" placeholder="Fixed height">
+    <button id="enterHeightButton" title="height">Enter height</button>
+
+
+    <input class='disabled' id="parentDimensionSizeInput" placeholder="Parent's dimension" type="text">
+    <button class='disabled' id="enterParentDimensionButton">Enter</button><br>
+
   </div>
-  <pre><code id='codeExportTextarea'></code></pre>
+  <div id='container' class="flexChild">
+  </div>
+</div>
+<pre><code id='codeExportTextarea'></code></pre>
   <img id="triggerHTMLCode" src="img/HTMLFile.png" alt="Export HTML">
   <img id="triggerCSSCode" src="img/CSSFile.png" alt="Export CSS">
   <img id="triggerInfo" src="img/info.png" alt="Export CSS">
@@ -30,6 +77,7 @@
   <a href="https://github.com/maxsteenbergen/Fibonacci"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="js/autoprefixer.js" type="text/javascript"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js"></script>
   <script src="js/fibonacci.js" type="text/javascript"></script>
 </body>

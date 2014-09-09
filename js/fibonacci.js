@@ -1,10 +1,8 @@
-//TODO: data-flexsize shenanigans
-
 $(document).ready( function(){
 
   var CSSOverrides = {}
 
-  function getUnstyledMarkup(){
+  function getUnstyledMarkup(cssCode){
     var clone = $('#container').clone(),
         elements = clone.find('div')
     for (var i = elements.length - 1; i >= 0; i--) {
@@ -61,12 +59,14 @@ $(document).ready( function(){
       $.get( 'css/fibonacci.css' ).then( function( cssCode, status, xhr ){
         var overrides = ''
         for (var i = Object.keys(CSSOverrides).length - 1; i >= 0; i--) {
-          overrides += '\n\n#' + Object.keys(CSSOverrides)[i] + '{\n  ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '\n}'
-        }
+          singleOverride = autoprefixer({cascade: false}).process( '#' + Object.keys(CSSOverrides)[i] + '{\n ' + CSSOverrides[Object.keys(CSSOverrides)[i]] + '\n}').css
+          overrides += '\n\n' + singleOverride + '\n'
+        }        
+        
         $( '#codeExportTextarea' ).empty()
                                   .css('display', 'block')
                                   .removeClass().addClass('css')
-                                  .append( cssCode + '' + overrides )
+                                  .append( cssCode + overrides )
         hljs.highlightBlock($('#codeExportTextarea')[0])
       })
     }
@@ -80,10 +80,10 @@ $(document).ready( function(){
     else {
       $( 'img' ).css( 'opacity', 0.6)
       $(this).css( 'opacity', 1)
-      
+
       var code =
       '<p>Fibonacci is an offshoot of an internal tool created to let non-developers design page layouts using Flexbox, without having to learn HTML or CSS.</p>' +
-      '<p>Fibonacci starts with a blank &lt;div&gt;, which you can then split to your heart\'s content. It generates both the HTML and CSS needed to recreate the layout in your own pages.' +
+      '<p>Fibonacci starts with a blank &lt;div&gt;, which you can then split to your heart\'s content. It generates both the HTML and CSS needed to recreate the layout in your own pages. ' +
       'After you\'ve made your horizontal or vertical split, you can then add a new sibling, shrink or expand, give it a fixed width/height, remove or split it again.<br>' +
       'Remember to add a unit when you enter a fixed width or height!</p>' +
       '<p>Once you\'re happy with the layout, hit the export icons to copy the generated code and paste it wherever you need it in your own code.</p>' +
@@ -110,43 +110,70 @@ $(document).ready( function(){
       if( parent.hasClass( 'rowParent' ))
         $( '#splitControls' ).append( '<img id="addVerticalIcon" data-layout-action="addvertical" src="img/addvertical.png" alt="Add vertical sibling" title="Add vertical sibling">' )
 
-      if ( srcDiv.id != 'container' )
-        $( '#splitControls' ).append( '<img id="addHorizontalIcon" data-layout-action="options" src="img/options.png" alt="More options" title="More options">' )
-
     }
   }
 
-  $( 'body' ).on( 'mouseover', 'div', function(e){
+
+  $( 'body' ).on( 'mouseover', '#container, #container div', function(e){
     addSplitControls(this)
   })
 
-  $( 'body' ).on( 'mouseleave', 'div', function(e){
+  $( 'body' ).on( 'click', '#container, #container div', function(e){
+    e.stopPropagation()
+    if( $(this).hasClass('selected') ){
+      $(this).removeClass('selected')
+      $("#optionsBar").addClass('disabled')
+    }
+    else {
+      $('div.selected').removeClass('selected')
+      $(this).addClass('selected')
+      $('#optionsBar').removeClass('disabled')
+
+      if( $('div.selected').parent().attr('id') != 'container' ){
+        $("#parentDimensionSizeInput, #enterParentDimensionButton ").removeClass('disabled')
+        var parentDimension = $('div.selected').parent().hasClass( 'columnParent' ) ? 'width' : 'height'
+        $("#parentDimensionSizeInput").attr('placeholder', 'Parent\'s ' + parentDimension )
+      } else {
+        $("#parentDimensionSizeInput, #enterParentDimensionButton ").addClass('disabled')
+      }
+    }
+  })
+
+  $( 'body' ).on( 'mouseleave', '#container, #container div', function(e){
     e.stopPropagation()
     $('#splitControls').remove()
     $('#optionsModal').remove()
   })
 
-  $( 'body' ).on( 'click', '#splitControls img', function(){
+
+  $( 'body' ).on( 'click', '#splitControls img', function(e){
+    e.stopPropagation()
+    $('div.selected').removeClass('selected')
+    $('#optionsBar').addClass('disabled')
     var parentDiv = $(this).parent().parent(),
         grandParent = parentDiv.parent(),
         action = $(this).data('layout-action'),
         indentCount = 0
-    
+
     if( $(parentDiv)[0].id != 'container' )
-      indentCount = (parentDiv.parentsUntil($('#container')).andSelf().length)  
+      indentCount = (parentDiv.parentsUntil($('#container')).andSelf().length)
 
     /*//////////////////////////////////////
     // Split current row in two
     //////////////////////////////////////*/
     if (action == 'splitvertical'){
-      parentDiv.append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div>\n' )
-              .append( insertIndentation(indentCount) + '<div id="rowChild' + Math.floor(Math.random() * 100000 + 1) + '"></div\n>' )
+      var id1 = Math.floor(Math.random() * 100000 + 1)
+      var id2 = Math.floor(Math.random() * 100000 + 1)
+
+      parentDiv.append( insertIndentation(indentCount) + '<div id="rowChild' + id1 + '"></div>\n' )
+              .append( insertIndentation(indentCount) + '<div id="rowChild' + id2 + '"></div\n>' )
               .addClass( 'rowParent' )
               .find( 'div' ).not('#splitControls').each(function(){
                 $(this).addClass( 'flexChild' )
                 if( $(this).data( 'flexsize') == undefined)
                     $(this).data( 'flexsize', 1 )
               })
+      $( '#splitControls' ).remove()
     }
 
     /*//////////////////////////////////////
@@ -161,6 +188,7 @@ $(document).ready( function(){
                 if( $(this).data( 'flexsize') == undefined)
                     $(this).data( 'flexsize', 1 )
               })
+      $( '#splitControls' ).remove()
     }
 
     /*//////////////////////////////////////
@@ -174,6 +202,7 @@ $(document).ready( function(){
                         if( $(this).data( 'flexsize') == undefined)
                             $(this).data( 'flexsize', 1 )
                       })
+        $( '#splitControls' ).remove()
       }
       else {
         alert( 'You need to split vertically first.')
@@ -191,82 +220,121 @@ $(document).ready( function(){
                         if( $(this).data( 'flexsize') == undefined)
                             $(this).data( 'flexsize', 1 )
                       })
+        $( '#splitControls' ).remove()
       }
       else {
         alert( 'You need to split horizontally first.')
       }
     }
-    
-    /*//////////////////////////////////////
-    // Open additional options modal
-    //////////////////////////////////////*/
-    else if(action == 'options'){
-      $('#splitControls').remove()
-      parentDiv.append( '<div id="optionsModal">' )
-      var dimension = grandParent.hasClass( 'columnParent' ) ? 'height' : 'width',
-          parentDimension = grandParent.parent().hasClass( 'columnParent' ) ? 'height' : 'width'
-
-      $( '#optionsModal' ).append( '<img src="img/expand.png" id="growDivButton" alt="Expand div" title="Expand div"></img>')
-                          .append( '<img src="img/shrink.png" id="shrinkDivButton" alt="Shrink div" title="Shrink div"></img>')
-                          .append( '<img id="removeDivButton" src="img/trash.png" alt="Delete div" title="Delete div"></img><br>' )
-                          .append( '<input id="dimensionSizeInput" type="text" placeholder="Fixed ' + dimension + '"><br>' )
-                          .append( '<button id="enterDimensionButton">Enter</button><br>')
-
-      if (grandParent.attr('id') != 'container'){
-        $( '#optionsModal' ).append( '<input id="parentDimensionSizeInput" placeholder="Parent\'s ' + parentDimension + '" type="text">' )
-                            .append( '<button id="enterParentDimensionButton">Enter</button><br>')
-      }
-      
-      // Increase flexsize
-      $( '#growDivButton' ).on( 'click', function(){
-        parentDiv.css({
-          'flex-grow': parentDiv.data( 'flexsize' ) + 1
-        })
-        parentDiv.data('flexsize', parentDiv.data( 'flexsize' ) + 1)
-        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
-        $( '#optionsModal' ).remove()
-      })
-      
-      // Decrease flexsize
-      $( '#shrinkDivButton' ).on( 'click', function(){
-        if (parentDiv.data( 'flexsize' ) > 1){
-          parentDiv.css({
-            'flex-grow': parentDiv.data( 'flexsize' ) - 1
-          })
-          parentDiv.data('flexsize', parentDiv.data( 'flexsize' ) - 1)
-          CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
-        }
-        $( '#optionsModal' ).remove()
-      })
-      
-      // Enter fixed width/height for current div
-      $( '#enterDimensionButton' ).on( 'click', function(){
-        parentDiv.css({
-          'flex': ' none'
-        })
-        .css(dimension, $( '#dimensionSizeInput' ).val())
-        CSSOverrides[ parentDiv.attr( 'id' ) ] = parentDiv.attr( 'style' )
-        $( '#optionsModal' ).remove()
-      })
-      
-      // Enter fixed width/height for current div's parent
-      $( '#enterParentDimensionButton' ).on( 'click', function(){
-        grandParent.css({
-          'flex': ' none'
-        })
-        .css(parentDimension, $( '#parentDimensionSizeInput' ).val())
-        CSSOverrides[ grandParent.attr( 'id' ) ] = grandParent.attr( 'style' )
-        $( '#optionsModal' ).remove()
-      })
-      
-      // Remove current div from DOM
-      $( '#removeDivButton' ).on( 'click', function(){
-       parentDiv.remove()
-       delete CSSOverrides[ parentDiv.attr( 'id' )]
-       $( '#optionsModal' ).remove()
-      })
-    }
-
-    $( '#splitControls' ).remove()
   })
+
+
+  /*/////////////////////////////////////////////
+  // Increase flexsize
+  /////////////////////////////////////////////*/
+  $( '#growDivButton').on( 'click', function(){
+    var selectedDiv = $('div.selected')
+      selectedDiv.css({
+        'flex-grow': selectedDiv.data( 'flexsize' ) + 1
+      })
+      selectedDiv.data('flexsize', selectedDiv.data( 'flexsize' ) + 1)
+      CSSOverrides[ selectedDiv.attr( 'id' ) ] = selectedDiv.attr( 'style' )
+  })
+
+  /*/////////////////////////////////////////////
+  // Decrease flexsize
+  /////////////////////////////////////////////*/
+  $( '#shrinkDivButton' ).on( 'click', function(){
+    var selectedDiv = $('div.selected')
+    if (selectedDiv.data( 'flexsize' ) > 1){
+      selectedDiv.css({
+        'flex-grow': selectedDiv.data( 'flexsize' ) - 1
+      })
+      selectedDiv.data('flexsize', selectedDiv.data( 'flexsize' ) - 1)
+      CSSOverrides[ selectedDiv.attr( 'id' ) ] = selectedDiv.attr( 'style' )
+    }
+  })
+
+  /*/////////////////////////////////////////////
+  // Enter fixed width/height for current div
+  /////////////////////////////////////////////*/
+  $( '#enterWidthButton, #enterHeightButton' ).on( 'click', function(e){
+    var selectedDiv = $('div.selected')
+        dimension = $(e.target).attr('title')
+        size = $( '#' + dimension + 'Input' ).val()
+
+      selectedDiv.css({
+        'flex': ' none'
+      })
+      .css(dimension, size)
+      CSSOverrides[ selectedDiv.attr( 'id' ) ] = selectedDiv.attr( 'style' )
+  })
+
+  /*/////////////////////////////////////////////
+  // Enter fixed width/height for selected div's parent
+  /////////////////////////////////////////////*/
+  $( '#enterParentDimensionButton' ).on( 'click', function(){
+    var selectedDiv = $('div.selected'),
+        selectedDivParent = $('div.selected').parent(),
+        parentDimension = selectedDivParent.hasClass( 'columnParent' ) ? 'width' : 'height'
+    
+    selectedDivParent.css({
+        'flex': ' none'
+      })
+    .css(parentDimension, $( '#parentDimensionSizeInput' ).val())
+
+    CSSOverrides[ selectedDivParent.attr( 'id' ) ] = selectedDivParent.attr( 'style' )
+  })
+
+
+  /*/////////////////////////////////////////////
+  // Set justification within parent
+  /////////////////////////////////////////////*/
+  $( '#justifyButton' ).on( 'change', function(){
+    var selectedDivParent = $('div.selected').parent()
+
+    selectedDivParent.css({
+      'justify-content': $(this).val()
+    })
+    CSSOverrides[ selectedDivParent.attr( 'id' ) ] = selectedDivParent.attr( 'style' )
+  })
+
+
+  /*/////////////////////////////////////////////
+  // Set single alignment
+  /////////////////////////////////////////////*/
+  $( '#singleAlignmentButton' ).on( 'change', function(){
+    var selectedDiv = $('div.selected')
+
+    selectedDiv.css({
+      'align-self': $(this).val()
+    })
+    CSSOverrides[ selectedDiv.attr( 'id' ) ] = selectedDiv.attr( 'style' )
+  })
+
+
+  /*/////////////////////////////////////////////
+  // Set global alignment for parent
+  /////////////////////////////////////////////*/
+  $( '#allAlignmentButton' ).on( 'change', function(){
+    var selectedDivParent = $('div.selected').parent()
+
+    selectedDivParent.css({
+      'align-items': $(this).val()
+    })
+    CSSOverrides[ selectedDivParent.attr( 'id' ) ] = selectedDivParent.attr( 'style' )
+  })
+
+
+  /*/////////////////////////////////////////////
+  // Remove current div from DOM
+  /////////////////////////////////////////////*/
+  $( '#removeDivButton' ).on( 'click', function(){
+    var selectedDiv = $('div.selected')
+    if (selectedDiv != $('#container')[0]){
+      delete CSSOverrides[ selectedDiv.attr( 'id' )]
+      selectedDiv.remove()
+    }
+  })
+
 })
